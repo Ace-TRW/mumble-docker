@@ -75,8 +75,7 @@ COPY --from=build --chmod=755 /mumble/repo/su-exec/su-exec /usr/local/bin/su-exe
 RUN mkdir -p /data /run/secrets
 
 # Set default environment variables
-ENV MUMBLE_CONFIG_SERVERPASSWORD="TRWMasterChat%99" \
-    PUID=10000 \
+ENV PUID=10000 \
     PGID=10000 \
     TZ=UTC
 
