@@ -79,14 +79,20 @@ ENV PUID=10000 \
     PGID=10000 \
     TZ=UTC
 
+# Create mumble user and set permissions
+RUN groupadd -g 10000 mumble && \
+    useradd -u 10000 -g mumble -d /data -s /sbin/nologin mumble && \
+    chown -R mumble:mumble /data
+
 # Copy config file from project root
 COPY mumble_server_config.ini /mumble_server_config.ini
+RUN chown mumble:mumble /mumble_server_config.ini
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
 
 VOLUME ["/data"]
 
-# Use the config file from root directory
-CMD ["/usr/bin/mumble-server", "-fg", "-ini", "/mumble_server_config.ini"]
+# Use su-exec to drop privileges
+CMD ["su-exec", "mumble:mumble", "/usr/bin/mumble-server", "-fg", "-ini", "/mumble_server_config.ini"]
 
