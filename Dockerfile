@@ -13,6 +13,7 @@ ARG MUMBLE_VERSION=latest
 # Consolidate RUN commands and clean up in the same layer
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libcap2 \
+    libcap2-bin \
     libzeroc-ice3.7t64 \
     '^libprotobuf[0-9]+$' \
     libavahi-compat-libdnssd1 \
@@ -87,6 +88,9 @@ RUN groupadd -g 10000 mumble && \
 # Copy config file from project root
 COPY mumble_server_config.ini /mumble_server_config.ini
 RUN chown mumble:mumble /mumble_server_config.ini
+
+# Set capabilities on the binary
+RUN setcap 'cap_net_bind_service=+ep' /usr/bin/mumble-server
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
