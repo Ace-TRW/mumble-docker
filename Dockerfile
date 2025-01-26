@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     '^libprotobuf[0-9]+$' \
     libavahi-compat-libdnssd1 \
     ca-certificates \
+    iproute2 \
     && export QT_VERSION="$( /mumble/scripts/choose_qt_version.sh )" \
     && /mumble/scripts/install_qt.sh \
     # Workaround for systems like CentOS 7 which won't load libQt5Core.so as expected:
@@ -32,6 +33,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ADD ./scripts/* /mumble/scripts/
 WORKDIR /mumble/repo
+
+
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     git cmake build-essential ca-certificates pkg-config \
