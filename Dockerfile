@@ -81,7 +81,7 @@ ENV MUMBLE_CONFIG_WELCOMETEXT="<h1>Welcome to The Real World's Chat Server!</h1>
     PUID=10000 \
     PGID=10000 \
     TZ=UTC \
-    MUMBLE_CONFIG_REGISTERERNAME=Ace
+    MUMBLE_CONFIG_REGISTERNAME=Ace
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
