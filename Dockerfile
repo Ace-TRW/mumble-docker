@@ -79,10 +79,14 @@ ENV PUID=10000 \
     PGID=10000 \
     TZ=UTC
 
+# Copy config file from project root
+COPY mumble_server_config.ini /mumble_server_config.ini
+
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
 
 VOLUME ["/data"]
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/usr/bin/mumble-server", "-fg"]
+
+# Use the config file from root directory
+CMD ["/usr/bin/mumble-server", "-fg", "-ini", "/mumble_server_config.ini"]
 
