@@ -71,6 +71,9 @@ COPY --from=build /mumble/repo/build/mumble-server /usr/bin/mumble-server
 COPY --from=build /mumble/repo/default_config.ini /etc/mumble/bare_config.ini
 COPY --from=build --chmod=755 /mumble/repo/su-exec/su-exec /usr/local/bin/su-exec
 
+# Create required directories
+RUN mkdir -p /data /run/secrets
+
 # Set default environment variables
 ENV MUMBLE_CONFIG_WELCOMETEXT="<h1>Welcome to this Mumble server!</h1>" \
     MUMBLE_CONFIG_USERS=100 \

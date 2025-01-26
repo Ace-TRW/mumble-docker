@@ -180,14 +180,20 @@ ip addr show
 
 # Log listening ports
 echo "Listening Ports:"
-netstat -tuln | grep 64738
+netstat -tuln || echo "No ports listening yet"
 
 echo "Command run to start the service : ${server_invocation[*]}"
 echo "Starting..."
 
+# Add debug output for configuration
+echo "Configuration file contents:"
+cat "${CONFIG_FILE}"
+
 # Drop privileges (when asked to) if root, otherwise run as current user
 if [[ "$(id -u)" = "0" ]] && [[ "${PUID}" != "0" ]]; then
-	su-exec ${PUID}:${PGID} "${server_invocation[@]}"
+	echo "Dropping privileges to ${PUID}:${PGID}"
+	exec su-exec ${PUID}:${PGID} "${server_invocation[@]}"
 else
+	echo "Running as current user: $(id)"
 	exec "${server_invocation[@]}"
 fi
