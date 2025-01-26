@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  mumble-server:
+    image: mumblevoip/mumble-server:latest
+    container_name: mumble-server
+    ports:
+      - "64738:64738/tcp"
+      - "64738:64738/udp"
+    volumes:
+      - ./data:/data
+    environment:
+      MUMBLE_CONFIG_SERVER_PASSWORD: "TRWMasterChat%99"
+      MUMBLE_SUPERUSER_PASSWORD: "TNq9Qqmh4$dPHjSklR6o9F9%T"
+      MUMBLE_CONFIG_WELCOMETEXT: "<h1>Welcome to TRW's Chat!</h1>"
+      MUMBLE_CONFIG_MAX_USERS: "500"
+    restart: unless-stopped
