@@ -9,8 +9,8 @@ services:
     volumes:
       - ./data:/data
     environment:
-      MUMBLE_CONFIG_SERVER_PASSWORD: "TRWMasterChat%99"
-      MUMBLE_SUPERUSER_PASSWORD: "TNq9Qqmh4$dPHjSklR6o9F9%T"
-      MUMBLE_CONFIG_WELCOMETEXT: "<h1>Welcome to TRW's Chat!</h1>"
-      MUMBLE_CONFIG_MAX_USERS: "500"
+      MUMBLE_CONFIG_SERVER_PASSWORD: "TRWMasterChat%99" # Server password
+      MUMBLE_SUPERUSER_PASSWORD: "TNq9Qqmh4$dPHjSklR6o9F9%T" # SuperUser password
+      MUMBLE_CONFIG_WELCOMETEXT: "<h1>Welcome to TRW's Chat!</h1>" # Welcome message
+      MUMBLE_CONFIG_USERS: "500" # Corrected key for max users
     restart: unless-stopped
