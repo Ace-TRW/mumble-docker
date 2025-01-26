@@ -75,15 +75,7 @@ COPY --from=build --chmod=755 /mumble/repo/su-exec/su-exec /usr/local/bin/su-exe
 RUN mkdir -p /data /run/secrets
 
 # Set default environment variables
-ENV MUMBLE_CONFIG_WELCOMETEXT="<h1>Welcome to The Real World's Chat Server!</h1>" \
-    MUMBLE_CONFIG_USERS=100 \
-    MUMBLE_CONFIG_BANDWIDTH=128000 \
-    MUMBLE_CONFIG_SERVERPASSWORD="TRWMasterChat%99" \
-    MUMBLE_CONFIG_CERTREQUIRED=false \
-    MUMBLE_CONFIG_REMEMBERCHANNEL=true \
-    MUMBLE_CONFIG_ALLOWHTML=true \
-    MUMBLE_CONFIG_DEFAULTCHANNEL=1 \
-    MUMBLE_CONFIG_ROOT="TRW" \
+ENV MUMBLE_CONFIG_SERVERPASSWORD="TRWMasterChat%99" \
     PUID=10000 \
     PGID=10000 \
     TZ=UTC
