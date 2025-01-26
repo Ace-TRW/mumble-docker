@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libavahi-compat-libdnssd1 \
     ca-certificates \
     iproute2 \
+    net-tools \
     && export QT_VERSION="$( /mumble/scripts/choose_qt_version.sh )" \
     && /mumble/scripts/install_qt.sh \
     # Workaround for systems like CentOS 7 which won't load libQt5Core.so as expected:
@@ -75,8 +76,7 @@ FROM base
 COPY --from=build /mumble/repo/build/mumble-server /usr/bin/mumble-server
 COPY --from=build /mumble/repo/default_config.ini /etc/mumble/bare_config.ini
 COPY --from=build --chmod=755 /mumble/repo/su-exec/su-exec /usr/local/bin/su-exec
-COPY data/mumble-server.ini /data/mumble-server.ini
-
+COPY data/mumble-server.ini /data/mumble_server_config.ini
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
