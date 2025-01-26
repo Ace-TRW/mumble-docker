@@ -78,6 +78,7 @@ RUN mkdir -p /data /run/secrets
 ENV MUMBLE_CONFIG_WELCOMETEXT="<h1>Welcome to The Real World's Chat Server!</h1>" \
     MUMBLE_CONFIG_USERS=100 \
     MUMBLE_CONFIG_BANDWIDTH=128000 \
+    MUMBLE_CONFIG_SERVERPASSWORD="TRWMasterChat%99" \
     PUID=10000 \
     PGID=10000 \
     TZ=UTC 
