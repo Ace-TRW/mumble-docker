@@ -1,11 +1,16 @@
 FROM ubuntu:24.04 AS base
 
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD netstat -tuln | grep -q 64738 || exit 1
+
 ADD ./scripts/* /mumble/scripts/
 WORKDIR /mumble/scripts
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG MUMBLE_VERSION=latest
 
+# Consolidate RUN commands and clean up in the same layer
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libcap2 \
     libzeroc-ice3.7t64 \
@@ -16,26 +21,16 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     net-tools \
     && export QT_VERSION="$( /mumble/scripts/choose_qt_version.sh )" \
     && /mumble/scripts/install_qt.sh \
-    # Workaround for systems like CentOS 7 which won't load libQt5Core.so as expected:
-    # see also https://stackoverflow.com/a/68897099/
-    binutils \
     && find /lib* /usr/lib* -name 'libQt?Core.so.*' -exec strip --remove-section=.note.ABI-tag {} \; \
-    && apt-get -y purge binutils \
-    # End of workaround
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /data \
-    && rm -Rf /scripts
-
-
+    && mkdir -p /data
 
 FROM base AS build
 ARG DEBIAN_FRONTEND=noninteractive
 
 ADD ./scripts/* /mumble/scripts/
 WORKDIR /mumble/repo
-
-
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     git cmake build-essential ca-certificates pkg-config \
@@ -69,14 +64,20 @@ RUN /mumble/scripts/clone.sh \
 RUN git clone https://github.com/ncopa/su-exec.git /mumble/repo/su-exec \
     && cd /mumble/repo/su-exec && make
 
-
-
+# Final stage
 FROM base
 
 COPY --from=build /mumble/repo/build/mumble-server /usr/bin/mumble-server
 COPY --from=build /mumble/repo/default_config.ini /etc/mumble/bare_config.ini
 COPY --from=build --chmod=755 /mumble/repo/su-exec/su-exec /usr/local/bin/su-exec
-COPY data/mumble_server_config.ini /data/mumble_server_config.ini
+
+# Set default environment variables
+ENV MUMBLE_CONFIG_WELCOMETEXT="<h1>Welcome to this Mumble server!</h1>" \
+    MUMBLE_CONFIG_USERS=100 \
+    MUMBLE_CONFIG_BANDWIDTH=128000 \
+    PUID=10000 \
+    PGID=10000 \
+    TZ=UTC
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
