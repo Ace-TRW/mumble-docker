@@ -174,6 +174,14 @@ echo "Running Mumble server as uid=${PUID} gid=${PGID}"
 echo "\"${DATA_DIR}\" has the following permissions set:"
 echo "  $( stat ${DATA_DIR} --printf='%A, owner: \"%U\" (UID: %u), group: \"%G\" (GID: %g)' )"
 
+# Log container network information
+echo "Container Network Information:"
+ip addr show
+
+# Log listening ports
+echo "Listening Ports:"
+netstat -tuln | grep 64738
+
 echo "Command run to start the service : ${server_invocation[*]}"
 echo "Starting..."
 
