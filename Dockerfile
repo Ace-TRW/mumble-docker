@@ -80,7 +80,7 @@ ENV MUMBLE_CONFIG_WELCOMETEXT="<h1>Welcome to The Real World's Chat Server!</h1>
     MUMBLE_CONFIG_BANDWIDTH=128000 \
     PUID=10000 \
     PGID=10000 \
-    TZ=UTC \
+    TZ=UTC 
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
