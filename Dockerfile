@@ -76,7 +76,7 @@ FROM base
 COPY --from=build /mumble/repo/build/mumble-server /usr/bin/mumble-server
 COPY --from=build /mumble/repo/default_config.ini /etc/mumble/bare_config.ini
 COPY --from=build --chmod=755 /mumble/repo/su-exec/su-exec /usr/local/bin/su-exec
-COPY data/mumble-server.ini /data/mumble_server_config.ini
+COPY data/mumble_server_config.ini /data/mumble_server_config.ini
 
 EXPOSE 64738/tcp 64738/udp
 COPY entrypoint.sh /entrypoint.sh
